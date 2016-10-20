@@ -369,16 +369,16 @@ void stream(Float* f, Float* f_new)
                     f_new[idxi(  x,  y,  z,  5)]
                         = fmax(0.0, f[idxi(x, y, z, 6)]);
 
-                
+
                 // Edge 7 (+x,+y): Bounce back
                 if (x < nx-1 && y < ny-1)
                     f_new[idxi(x+1,y+1,  z,  7)]
                         = fmax(0.0, f[idxi(x, y, z, 7)]);
                 else if (x < nx-1)
-                    f_new[idxi(x+1,  y,  z,  9)]
+                    f_new[idxi(x+1,  y,  z, 10)]
                         = fmax(0.0, f[idxi(x, y, z, 7)]);
                 else if (y < ny-1)
-                    f_new[idxi(  x,y+1,  z, 10)]
+                    f_new[idxi(  x,y+1,  z,  9)]
                         = fmax(0.0, f[idxi(x, y, z, 7)]);
                 else
                     f_new[idxi(  x,  y,  z,  8)]
@@ -417,10 +417,10 @@ void stream(Float* f, Float* f_new)
                     f_new[idxi(x+1,y-1,  z, 10)]
                         = fmax(0.0, f[idxi(x, y, z, 10)]);
                 else if (x < nx-1)
-                    f_new[idxi(x+1,  y,  z,  8)]
+                    f_new[idxi(x+1,  y,  z,  7)]
                         = fmax(0.0, f[idxi(x, y, z, 10)]);
                 else if (y > 0)
-                    f_new[idxi(  x,y-1,  z,  7)]
+                    f_new[idxi(  x,y-1,  z,  8)]
                         = fmax(0.0, f[idxi(x, y, z, 10)]);
                 else
                     f_new[idxi(  x,  y,  z,  9)]
@@ -537,6 +537,7 @@ void stream(Float* f, Float* f_new)
                 else
                     f_new[idxi(  x,  y,  z, 17)]
                         = fmax(0.0, f[idxi(x, y, z, 18)]);
+
             }
         }
     }
