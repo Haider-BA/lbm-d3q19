@@ -653,7 +653,7 @@ int main(int argc, char** argv)
         fclose(frho);
     } else {
         fprintf(stderr, "Error: Could not open output file ");
-        fprintf(stderr, filename);
+        fprintf(stderr, "%s", filename);
         fprintf(stderr, "\n");
         exit(EXIT_FAILURE);
     }
@@ -681,7 +681,7 @@ int main(int argc, char** argv)
                 fclose(frho);
             } else {
                 fprintf(stderr, "Error: Could not open output file ");
-                fprintf(stderr, filename);
+                fprintf(stderr, "%s", filename);
                 fprintf(stderr, "\n");
                 exit(EXIT_FAILURE);
             }
