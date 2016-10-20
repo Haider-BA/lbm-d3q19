@@ -246,7 +246,7 @@ Float3 find_u(
     Float3 u = {0.0, 0.0, 0.0};
     Float f_i;
     unsigned int i;
-#pragma omp parallel for private(f_i,u)
+//#pragma omp parallel for private(f_i,u)
     for (i=0; i<m; i++) {
         f_i = f[idxi(x,y,z,i)];
         u.x += f_i*e[i].x/rho;
