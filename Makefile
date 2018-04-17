@@ -1,4 +1,4 @@
-CFLAGS=-g -Wall -pg -O2
+CFLAGS=-g -Wall -pg -O2 #-fopenmp -march=native -funroll-loops
 LDLIBS=-lm
 BIN=lbm
 
