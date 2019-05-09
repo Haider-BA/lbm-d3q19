@@ -1,6 +1,8 @@
-CFLAGS=-g -Wall -pg -O2 -fopenmp
+CFLAGS=-g -Wall -pg -O2 #-fopenmp -march=native -funroll-loops
 LDLIBS=-lm
 BIN=lbm
+
+.PHONY: default plots data profile clean
 
 default: plots
 
@@ -8,7 +10,7 @@ plots: data
 	# Plotting data
 	@cd out && for f in *.txt; do gnuplot -e "matrixfile='$$f'" plotmatrix.gp; done
 
-data: clean $(BIN)
+data: $(BIN)
 	# Running program
 	@./$(BIN)
 

@@ -3,7 +3,7 @@
 # plot matrix file. Invoke with:
 #   $ gnuplot -e "matrixfile='file.txt'" plotmatrix.gp
 
-set terminal pngcairo
+set terminal png
 set output matrixfile.".png"
 
 set size ratio -1
