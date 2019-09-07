@@ -85,19 +85,19 @@ Float tau(void) {
 
 // Get i-th value from cell x,y,z
 unsigned int idx(
-        unsigned int x,
-        unsigned int y,
-        unsigned int z)
+        const unsigned int x,
+        const unsigned int y,
+        const unsigned int z)
 {
     return x + nx*y + nx*ny*z;
 }
 
 // Get i-th value from cell x,y,z
 unsigned int idxi(
-        unsigned int x,
-        unsigned int y,
-        unsigned int z,
-        unsigned int i)
+        const unsigned int x,
+        const unsigned int y,
+        const unsigned int z,
+        const unsigned int i)
 {
     return x + ((y + z*ny)*nx) + (nx*ny*nz*i);
 }
@@ -222,10 +222,10 @@ Float bgk(
 
 // Cell fluid density
 Float find_rho(
-        Float* f,
-        unsigned int x,
-        unsigned int y,
-        unsigned int z)
+        const Float* f,
+        const unsigned int x,
+        const unsigned int y,
+        const unsigned int z)
 {
     int i;
     Float rho = 0.0;
@@ -236,17 +236,16 @@ Float find_rho(
 
 // Cell fluid velocity
 Float3 find_u(
-        Float* f,
-        Float rho,
-        Float3* e,
-        unsigned int x,
-        unsigned int y,
-        unsigned int z)
+        const Float* f,
+        const Float rho,
+        const Float3* e,
+        const unsigned int x,
+        const unsigned int y,
+        const unsigned int z)
 {
     Float3 u = {0.0, 0.0, 0.0};
     Float f_i;
     unsigned int i;
-//#pragma omp parallel for private(f_i,u)
     for (i=0; i<m; i++) {
         f_i = f[idxi(x,y,z,i)];
         u.x += f_i*e[i].x/rho;
@@ -270,19 +269,23 @@ Float3 find_u(
 
 // Lattice-Boltzmann collision step.
 // Fluid distributions are modified towards the cell equilibrium.
-// Values are read from f, and written to rho and u.
+// Values are read from f, and written to f, rho, and u.
 void collide(
         Float* f,
         Float* rho,
         Float3* u,
-        Float3* e)
+        const Float3* e)
 {
     unsigned int x, y, z, i;
     Float rho_new;
     Float3 u_new;
 
-    // Parallelize this with OpenMP
     // For each cell
+/*#pragma omp parallel for default(none) \
+    private(x, y, z, rho_new, u_new, i) \
+    firstprivate(e) \
+    shared(f, rho, u) \
+    schedule(dynamic)*/
     for (z=0; z<nz; z++) {
         for (y=0; y<ny; y++) {
             for (x=0; x<nx; x++) {
@@ -292,15 +295,15 @@ void collide(
                 u_new = find_u(f, rho_new, e, x, y, z);
 
                 // Store macroscopic parameters
-                rho[idx(x,y,z)] = rho_new;
-                u[idx(x,y,z)] = u_new;
+                int idx_ = idx(x,y,z);
+                rho[idx_] = rho_new;
+                u[idx_] = u_new;
 
                 // Find new f values by fluid particle collision
-//#pragma omp parallel for
                 for (i=0; i<m; i++) {
-                    f[idxi(x,y,z,i)] =
-                        bgk(f[idxi(x,y,z,i)], tau(), rho_new,
-                                w(i), e[i], u_new);
+                    int idxi_ = idxi(x,y,z,i);
+                    f[idxi_] = bgk(f[idxi_], tau(), rho_new,
+                            w(i), e[i], u_new);
                 }
             }
         }
