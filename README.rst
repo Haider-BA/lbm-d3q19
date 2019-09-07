@@ -12,6 +12,7 @@ Requirements
 The build requirements are:
   * A C compiler, from e.g. the `GNU Compiler Collection 
     <http://gcc.gnu.org/>`_ (GCC)
+  * Gnuplot for result visualization
 
 Obtaining lbm-d3q19
 -------------------
@@ -19,7 +20,7 @@ The best way to keep up to date with subsequent updates, bugfixes and
 development, is to use the Git version control system. To obtain a local 
 copy, execute::
 
- git clone https://github.com/anders-dc/lbm-d3q19.git
+ git clone git://src.adamsgaard.dk/lbm-d3q19
 
 Build and run instructions
 --------------------------
